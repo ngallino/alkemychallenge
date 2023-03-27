@@ -1,0 +1,101 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type DetalleDeCompra {
+  id: ID!
+  fecha: String!
+  factura: Float!
+  codProd: String!
+}
+
+type Reclamo {
+  id: ID!
+  titulo: String!
+  numerodereclamo: Float!
+  descripcion: String!
+  detalleDeCompra: DetalleDeCompra!
+}
+
+type User {
+  id: ID!
+  fullName: String!
+  email: String!
+  roles: [String!]!
+  isActive: Boolean!
+  lastUpdateBy: User
+  itemCount: Int!
+  items(offset: Int = 0, limit: Int = 10, search: String): [Reclamo!]!
+}
+
+type AuthResponse {
+  token: String!
+}
+
+type Query {
+  revalite: AuthResponse!
+  users(roles: [ValidRoles!] = []): [User!]!
+  user(id: ID!): User!
+  reclamos(offset: Int = 0, limit: Int = 10, search: String): [Reclamo!]!
+  item(id: ID!): Reclamo!
+  buscarPorTitulo(term: String!): [Reclamo!]!
+}
+
+"""
+Ullamco labore ut ut adipisicing commodo sit elit ullamco eiusmod ut mollit sint.
+"""
+enum ValidRoles {
+  admin
+  user
+  superUser
+}
+
+type Mutation {
+  signup(signupInput: SignupInput!): AuthResponse!
+  login(loginInput: LoginInput!): AuthResponse!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  createReclamo(createReclamoInput: CreateReclamoInput!): Reclamo!
+  updateItem(updateItemInput: UpdateReclamoInput!): Reclamo!
+  removeItem(id: ID!): Reclamo!
+}
+
+input SignupInput {
+  email: String!
+  fullName: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+  fullName: String
+  password: String
+  id: ID!
+  roles: [ValidRoles!]
+  isActive: Boolean
+}
+
+input CreateReclamoInput {
+  numerodereclamo: Float!
+  titulo: String!
+  descripcion: String!
+  detalledecompra: CreateDetalleCompraDto!
+}
+
+input CreateDetalleCompraDto {
+  fecha: String!
+  factura: Float!
+  codProd: String!
+}
+
+input UpdateReclamoInput {
+  numerodereclamo: Float
+  titulo: String
+  descripcion: String
+  detalledecompra: CreateDetalleCompraDto
+  id: ID!
+}
