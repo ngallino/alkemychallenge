@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { DetalleDeCompra } from './detalledecompra.entity';
 
 @Entity({ name: 'reclamos' })
@@ -15,7 +15,7 @@ export class Reclamo {
   @Field( () => String )
   titulo: string;
   
-  @Column()
+  @Column({unique: true})
   @Field( () => Number )
   numerodereclamo: number;
   
@@ -26,13 +26,21 @@ export class Reclamo {
 
   @Field()
   @OneToOne(
-    () => DetalleDeCompra, {onDelete: 'CASCADE'}
-  )
+    () => DetalleDeCompra, detalle => detalle.reclamo,  {
+      cascade: true,
+       }
+    )
+  @JoinColumn()
   detalleDeCompra: DetalleDeCompra;
 
   @ManyToOne(
     () => User, (user) => user.id, {eager:true, onDelete:'CASCADE'}
     )
   usuario : User
+
+
+  @Column({nullable: true})
+  @Field( () => String, {nullable: true})
+  imagen?: string
 
 }

@@ -4,9 +4,9 @@
 
 type DetalleDeCompra {
   id: ID!
-  fecha: String!
   factura: Float!
   codProd: String!
+  fecha: String!
 }
 
 type Reclamo {
@@ -15,6 +15,7 @@ type Reclamo {
   numerodereclamo: Float!
   descripcion: String!
   detalleDeCompra: DetalleDeCompra!
+  imagen: String
 }
 
 type User {
@@ -54,7 +55,7 @@ type Mutation {
   signup(signupInput: SignupInput!): AuthResponse!
   login(loginInput: LoginInput!): AuthResponse!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  createReclamo(createReclamoInput: CreateReclamoInput!): Reclamo!
+  createReclamo(createReclamoInput: CreateReclamoInput!, createDetalleDeCompra: CreateDetalleCompraDto!): Reclamo!
   updateItem(updateItemInput: UpdateReclamoInput!): Reclamo!
   removeItem(id: ID!): Reclamo!
 }
@@ -83,19 +84,17 @@ input CreateReclamoInput {
   numerodereclamo: Float!
   titulo: String!
   descripcion: String!
-  detalledecompra: CreateDetalleCompraDto!
 }
 
 input CreateDetalleCompraDto {
-  fecha: String!
   factura: Float!
   codProd: String!
+  fecha: String!
 }
 
 input UpdateReclamoInput {
   numerodereclamo: Float
   titulo: String
   descripcion: String
-  detalledecompra: CreateDetalleCompraDto
   id: ID!
 }

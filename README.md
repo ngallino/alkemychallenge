@@ -39,6 +39,9 @@ por lo tanto es necesario la creacion de un usuario,
 a travez del modulo users y utilizar el token correspondiente.
 ```
 
+9. La documentacion del uso de Querys y Mutations se puede encontrar en Apollo, en cuanto a la carga de 
+  imagenes es un unico Post endpoint que recive una imagen como parametro. 
+
 # Funcionalidades
 
 - El modulo de 'reclamos' permite Crear, Modificar, buscar todos los reclamos, buscar reclamo por titulo y eliminar reclamos.

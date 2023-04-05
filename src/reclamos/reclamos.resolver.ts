@@ -10,6 +10,8 @@ import { Reclamo } from './entities/reclamo.entity';
 import { ReclamosService } from './reclamos.service';
 import { CreateReclamoInput } from './dto/inputs/create-reclamo.input';
 import { UpdateReclamoInput } from './dto/inputs/update-reclamo.input';
+import { CreateDetalleCompraDto } from './dto/inputs/detalledecompra.input';
+
 
 @Resolver(() => Reclamo)
 @UseGuards( JwtAuthGuard )
@@ -19,9 +21,10 @@ export class ReclamosResolver {
   @Mutation(() => Reclamo, { name: 'createReclamo' })
   async createItem(
     @Args('createReclamoInput') createReclamoInput: CreateReclamoInput,
+    @Args('createDetalleDeCompra') detalleDeCompra: CreateDetalleCompraDto,
     @CurrentUser() user: User
   ): Promise<Reclamo> {
-    return this.reclamosService.create( createReclamoInput, user );
+    return this.reclamosService.create( createReclamoInput, detalleDeCompra, user );
   }
 
 

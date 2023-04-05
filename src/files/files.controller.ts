@@ -1,31 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { fileFilter } from './fileFilter.helper';
 import { diskStorage } from 'multer';
-import { fileNamer } from './fileNamer.helper';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 
-@Controller('files')
+@Controller('imagen')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
-
-  @Post('image:/reclamoId')
+ 
+  @UseGuards( JwtAuthGuard )
+  @Post('upload/:reclamoId')
   @UseInterceptors(FileInterceptor('imagen', {
     fileFilter: fileFilter,
-    limits: { fileSize: 3000 },
-    storage: diskStorage ({
-      destination: './static/imagenes',
-      filename: fileNamer
-    }) 
+    limits: { fileSize: 3000000 },
   })) 
   uploadImage( 
     @UploadedFile() file: Express.Multer.File,
-    @Param('reclamoId', ParseUUIDPipe) reclamoId: string 
+    @Param('reclamoId', ParseUUIDPipe) reclamoId: string,
+    @CurrentUser() user: User
     ){
-    
-    return { fieldName: file.originalname, reclamoId };
-
+    return this.filesService.upload( reclamoId, user, file );
   }
 
 }

@@ -21,7 +21,4 @@ export class CreateReclamoInput {
   @MinLength(3)
   descripcion: string;
 
-  @Field( () => CreateDetalleCompraDto )
-  detalledecompra: CreateDetalleCompraDto;
-
 }

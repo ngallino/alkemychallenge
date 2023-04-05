@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Reclamo } from './reclamo.entity';
 
 
@@ -12,16 +12,21 @@ export class DetalleDeCompra {
     id: string;
 
     @Column()
-    @Field( () => String )
-    fecha: string;
-
-    @Column()
     @Field( () => Number )
     factura: number;
     
     @Column()
     @Field( () => String )
     codProd: string;
+    
+    @Column()
+    @Field( () => String )
+    fecha: string;
 
-
+    @OneToOne(
+        () => Reclamo, reclamo => reclamo.detalleDeCompra, {   
+          eager: true,         
+        }
+        )
+      reclamo: Reclamo;
 }
